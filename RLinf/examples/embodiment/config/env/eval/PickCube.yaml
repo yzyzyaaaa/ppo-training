@@ -1,0 +1,34 @@
+simulator_type: maniskill
+auto_reset: True
+ignore_terminations: False
+use_rel_reward: True
+reward_mode: raw
+seed: 42
+num_group: 1  # 评估时只用1个环境
+group_size: 1
+use_fixed_reset_state_ids: False
+max_episode_steps: 50
+only_eval: True
+num_envs: 10  # 运行10个episode
+
+video_cfg:
+  save_video: True  # 开启视频保存
+  info_on_video: True
+  video_base_dir: /mnt/RL/yzy/recordings/eval_videos
+  num_episodes_to_save: 5  # 保存前5个episode的视频
+
+init_params:
+  id: "PickCube-v1"
+  num_envs: 10
+  obs_mode: "state"
+  control_mode: None
+  sim_backend: "gpu"
+  sim_config:
+    sim_freq: 100
+    control_freq: 20
+  max_episode_steps: 50
+  sensor_configs:
+    shader_pack: "default"  # 使用默认shader以获得更好的视觉效果
+    width: 640  # 更高的分辨率
+    height: 480
+  render_mode: rgb_array

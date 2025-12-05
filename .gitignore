@@ -18,8 +18,8 @@ recordings/
 # 如果想保留示例，可以创建一个小的examples目录
 # !recordings/examples/
 
-# RLinf框架（作为依赖，不上传）
-RLinf/
+# RLinf框架（已包含在仓库中）
+# RLinf/
 
 # IDE
 .vscode/
