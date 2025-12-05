@@ -1,0 +1,12 @@
+# Git LFS (大文件存储) - 如果需要上传模型和视频
+*.pth filter=lfs diff=lfs merge=lfs -text
+*.mp4 filter=lfs diff=lfs merge=lfs -text
+*.ckpt filter=lfs diff=lfs merge=lfs -text
+
+# 文本文件
+*.py text eol=lf
+*.sh text eol=lf
+*.yaml text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+
