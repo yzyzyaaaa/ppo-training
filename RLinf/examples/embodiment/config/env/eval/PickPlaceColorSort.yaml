@@ -1,0 +1,35 @@
+simulator_type: maniskill
+auto_reset: True
+ignore_terminations: False
+use_rel_reward: True
+reward_mode: raw
+seed: 42
+num_group: 1
+group_size: 1
+use_fixed_reset_state_ids: False
+max_episode_steps: 100
+only_eval: True
+num_envs: 10
+
+video_cfg:
+  save_video: True
+  info_on_video: True
+  video_base_dir: /mnt/RL/yzy/recordings/eval_videos
+  num_episodes_to_save: 10
+
+init_params:
+  id: "PickSingleYCB-v1"
+  num_envs: 10
+  obs_mode: "rgbd"  # 使用RGBD模式
+  control_mode: None
+  sim_backend: "gpu"
+  sim_config:
+    sim_freq: 100
+    control_freq: 20
+  max_episode_steps: 100
+  sensor_configs:
+    shader_pack: "default"
+    width: 224  # CLIP输入尺寸
+    height: 224
+  render_mode: rgb_array
+

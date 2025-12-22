@@ -126,7 +126,17 @@ class ManiskillEnv(gym.Env):
 
     def _wrap_obs(self, raw_obs):
         if self.env.obs_mode == "state":
-            wrapped_obs = {"images": None, "task_description": None, "state": raw_obs}
+            wrapped_obs = {"images": None, "task_description": None, "states": raw_obs["state"]}
+        elif self.env.obs_mode in ["rgbd", "rgb", "image"]:
+            # 提取视觉和状态信息
+            wrapped_obs = self._extract_obs_image(raw_obs)
+            # 同时包含状态信息（如果可用）
+            if "state" in raw_obs:
+                wrapped_obs["states"] = raw_obs["state"]
+            else:
+                # 如果没有state，创建一个空的状态
+                batch_size = wrapped_obs["images"].shape[0]
+                wrapped_obs["states"] = torch.zeros(batch_size, 45, device=wrapped_obs["images"].device)
         else:
             wrapped_obs = self._extract_obs_image(raw_obs)
         return wrapped_obs
@@ -134,6 +144,8 @@ class ManiskillEnv(gym.Env):
     def _extract_obs_image(self, raw_obs):
         obs_image = raw_obs["sensor_data"]["3rd_view_camera"]["rgb"].to(torch.uint8)
         obs_image = obs_image.permute(0, 3, 1, 2)  # [B, C, H, W]
+        # 转换为float32并归一化到[0, 1]
+        obs_image = obs_image.float() / 255.0
         extracted_obs = {"images": obs_image, "task_descriptions": self.instruction}
         return extracted_obs
 
@@ -143,9 +155,13 @@ class ManiskillEnv(gym.Env):
         reward = torch.zeros(self.num_envs, dtype=torch.float32).to(
             self.env.device
         )  # [B, ]
-        reward += info["is_src_obj_grasped"] * 0.1
-        reward += info["consecutive_grasp"] * 0.1
-        reward += (info["success"] & info["is_src_obj_grasped"]) * 1.0
+        # 安全地获取info中的键，如果不存在则使用默认值0
+        if "is_src_obj_grasped" in info:
+            reward += info["is_src_obj_grasped"].to(torch.float32) * 0.1
+        if "consecutive_grasp" in info:
+            reward += info["consecutive_grasp"] * 0.1
+        if "success" in info and "is_src_obj_grasped" in info:
+            reward += (info["success"] & info["is_src_obj_grasped"]).to(torch.float32) * 1.0
         # diff
         reward_diff = reward - self.prev_step_reward
         self.prev_step_reward = reward

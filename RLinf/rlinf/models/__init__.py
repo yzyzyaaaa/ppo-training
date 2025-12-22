@@ -252,6 +252,21 @@ def get_model(model_path, cfg: DictConfig, override_config_kwargs=None):
             num_action_chunks=cfg.num_action_chunks,
             add_value_head=cfg.add_value_head,
         )
+    elif cfg.model_name == "clip_mlp_policy":
+        from .embodiment.clip_mlp_policy import CLIPMLPPolicy
+
+        model = CLIPMLPPolicy(
+            obs_dim=cfg.obs_dim,
+            action_dim=cfg.action_dim,
+            hidden_dim=cfg.hidden_dim,
+            num_action_chunks=cfg.num_action_chunks,
+            add_value_head=cfg.add_value_head,
+            clip_model_name=getattr(cfg, "clip_model_name", "ViT-B/32"),
+            freeze_clip=getattr(cfg, "freeze_clip", True),
+            use_state=getattr(cfg, "use_state", True),
+            vision_embed_dim=getattr(cfg, "vision_embed_dim", 512),
+            text_embed_dim=getattr(cfg, "text_embed_dim", 512),
+        )
     elif cfg.model_name == "gr00t":
         from pathlib import Path
 

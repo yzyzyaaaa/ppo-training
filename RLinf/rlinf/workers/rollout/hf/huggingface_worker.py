@@ -100,8 +100,17 @@ class MultiStepRolloutWorker(Worker):
         )
         kwargs["do_sample"] = do_sample
 
-        if self.cfg.actor.model.model_name in ["openpi", "mlp_policy", "gr00t"]:
+        if self.cfg.actor.model.model_name in ["openpi", "mlp_policy", "gr00t", "clip_mlp_policy"]:
             kwargs = {"mode": mode}
+        
+        # 为CLIP模型添加text_prompt
+        if self.cfg.actor.model.model_name == "clip_mlp_policy":
+            # 从配置中获取任务prompt
+            task_prompt = self.cfg.runner.get("task_prompt", None)
+            if task_prompt:
+                # 为每个环境复制prompt
+                batch_size = env_obs["images"].shape[0] if "images" in env_obs else env_obs["states"].shape[0]
+                kwargs["text_prompt"] = [task_prompt] * batch_size
 
         with torch.no_grad():
             actions, result = self.hf_model.predict_action_batch(

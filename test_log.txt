@@ -1,0 +1,54 @@
+/home/iclab/anaconda3/envs/sapien_yzy/lib/python3.10/site-packages/torch/cuda/__init__.py:63: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+/home/iclab/anaconda3/envs/sapien_yzy/lib/python3.10/site-packages/sapien/__init__.py:18: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  import pkg_resources
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+======================================================================
+使用训练好的模型进行推理测试 - PickSingleYCB环境
+======================================================================
+
+1. 加载训练好的模型...
+从检查点加载模型: /mnt/RL/yzy/recordings/rlinf_logs/pickplace_multishape_mlp/checkpoints/global_step_1200
+✓ 模型加载成功!
+  ✓ 模型加载成功 (289,040 参数)
+
+2. 创建ManiSkill环境 (PickSingleYCB-v1)...
+  ✓ 环境创建成功
+
+3. 开始录制10个episodes...
+----------------------------------------------------------------------
+
+Episode 1/10: 步数: 100, 奖励: 27.556, ✗ 未成功
+
+Episode 2/10: 步数: 100, 奖励: 31.287, ✗ 未成功
+
+Episode 3/10: 步数: 100, 奖励: 21.176, ✗ 未成功
+
+Episode 4/10: 步数: 100, 奖励: 30.075, ✗ 未成功
+
+Episode 5/10: 步数: 100, 奖励: 9.176, ✗ 未成功
+
+Episode 6/10: 步数: 100, 奖励: 30.537, ✗ 未成功
+
+Episode 7/10: 步数: 100, 奖励: 13.273, ✗ 未成功
+
+Episode 8/10: 步数: 100, 奖励: 30.848, ✗ 未成功
+
+Episode 9/10: 步数: 100, 奖励: 13.077, ✗ 未成功
+
+Episode 10/10: 步数: 100, 奖励: 25.795, ✗ 未成功
+
+----------------------------------------------------------------------
+4. 保存视频到: /mnt/RL/yzy/recordings/2.mp4
+✓ 视频保存成功! (1180 帧, 59.0秒)
+
+======================================================================
+推理测试完成!
+======================================================================
+Episodes数: 10
+成功率: 0/10 (0.0%)
+平均步数: 100.0
+平均奖励: 23.280
+视频文件: /mnt/RL/yzy/recordings/2.mp4
+视频大小: 6.31 MB
+======================================================================
